@@ -1,6 +1,10 @@
 #!/bin/sh
 # переменные
 DATE=`date "+%Y-%m-%d"`
-echo "test" > /tmp/file_$DATE
-rsync -avz /tmp/file_$DATE root@ip:tmp
-ssh your_user@your_host "rm -f /home/captain/file.txt"
+dest_dir="/tmp"
+# создание файлов
+echo "test" > $dest_dir/file_$DATE
+# копирование файлов на удаленную машину
+rsync -avz $dest_dir/file_$DATE root@ip:tmp
+# Удаление ротация файлов на удаленной машине
+ssh your_user@your_host "find $dest_dir/file* -mtime +7 -exec rm -rf {} \;"
